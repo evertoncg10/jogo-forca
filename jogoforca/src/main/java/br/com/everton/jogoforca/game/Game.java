@@ -3,14 +3,13 @@ package br.com.everton.jogoforca.game;
 import java.util.HashSet;
 import java.util.Set;
 
+import br.com.everton.jogoforca.core.Config;
 import br.com.everton.jogoforca.core.Dictionary;
 import br.com.everton.jogoforca.core.InvalidCharacterException;
 import br.com.everton.jogoforca.core.Word;
 import br.com.everton.jogoforca.ui.UI;
 
 public class Game {
-
-	private static final int MAX_ERRORS = 5;
 
 	public void start() {
 		UI.print("Bem vindo ao Jogo da Forca!");
@@ -22,6 +21,9 @@ public class Game {
 
 		Set<Character> usedChars = new HashSet<>();
 		int errorCount = 0;
+
+		int maxErrors = Integer.parseInt(Config.get("maxErrors"));
+		UI.print("Você pode errar no máximo " + maxErrors + " vez(es)");
 
 		while (true) {
 			UI.print(word);
@@ -42,8 +44,8 @@ public class Game {
 				} else {
 					errorCount++;
 
-					if (errorCount < MAX_ERRORS) {
-						UI.print("Você errou! Você ainda tem " + (MAX_ERRORS - errorCount) + " chance(s)");
+					if (errorCount < maxErrors) {
+						UI.print("Você errou! Você ainda tem " + (maxErrors - errorCount) + " chance(s)");
 					}
 				}
 
@@ -55,7 +57,7 @@ public class Game {
 					break;
 				}
 
-				if (errorCount == MAX_ERRORS) {
+				if (errorCount == maxErrors) {
 					UI.print("Você perdeu o jogo! A palavra correta era: " + word.getOriginalWord());
 					UI.print("Fim do Jogo!");
 					break;
